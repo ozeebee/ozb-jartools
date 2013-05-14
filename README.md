@@ -177,7 +177,7 @@ For convenience, I have packaged the tools and all its dependencies (including s
 
 So, all you need is a JVM 1.6+.
 
-1. Download the [ozb-jartools-dist-0.2.jar]()
+1. Download the [ozb-jartools-dist-0.2.jar](https://docs.google.com/file/d/0Bxq9-8NxBE3WNzRKWnZYWF9hams/edit?usp=sharing)
 2. Run JarFinder  
 	`java -cp path/to/ozb-jartools.jar org.ozb.utils.jartools.JarFinder`
 3. Run JarGrep
@@ -194,13 +194,13 @@ I have compiled it with scala 2.9.3 and Java 1.6.
 
 ### Dependencies
 
-As defined in [build.sbt](), the code depends on
+As defined in [build.sbt](build.sbt), the code depends on
 
 	"com.github.scopt" % "scopt_2.9.2" % "2.1.0" withSources(),
 	"org.ozb" %% "ozb-scala-utils" % "0.1" intransitive() withSources()
 
 - [scopt](https://github.com/scopt/scopt) is a library to parse command-line arguments
-- [ozb-scala-utils](https://docs.google.com/file/d/0Bxq9-8NxBE3WNzRKWnZYWF9hams/edit?usp=sharing) is a library containing various scala utilities
+- [ozb-scala-utils](https://github.com/ozeebee/ozb-scala-utils) is a library containing various scala utilities
 
 ## License
 This code is open source software licensed under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
