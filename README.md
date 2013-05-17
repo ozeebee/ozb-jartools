@@ -177,7 +177,7 @@ For convenience, I have packaged the tools and all its dependencies (including s
 
 So, all you need is a JVM 1.6+.
 
-1. Download the [ozb-jartools-dist-0.2.jar](https://docs.google.com/file/d/0Bxq9-8NxBE3WNzRKWnZYWF9hams/edit?usp=sharing)
+1. Download the [ozb-jartools-dist-0.2.jar](https://docs.google.com/file/d/0Bxq9-8NxBE3WNzJmallfT0UxYTQ/edit?usp=sharing)
 2. Run JarFinder  
 	`java -cp path/to/ozb-jartools.jar org.ozb.utils.jartools.JarFinder`
 3. Run JarGrep

@@ -68,6 +68,7 @@ object JarGrep {
 					// print archive name (once) if an entry matches
 					if (e.archive != lastArchiveMatch)
 						println(e.archive.getPath)
+					lastArchiveMatch = e.archive
 					println("  " + e.entry)
 					e.matches.foreach(m => println("        line %d : %s" format (m._1, m._2)))
 
