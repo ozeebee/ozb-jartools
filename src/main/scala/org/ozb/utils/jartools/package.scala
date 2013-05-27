@@ -15,11 +15,14 @@ package object jartools {
 			if (file.isDirectory())
 				true
 			else {
-				val ext = FileUtils.getExtension(file.getName())
-				val archiveList = if (includeAllArchives) allArchives else allJavaArchives
-				// the following will return false ONLY if the include pattern option is defined and if it DOES NOT match filename, otherwise true will be returned
-				val incrslt = includePattern.map(p => new Regex(p).pattern.matcher(file.getName()).matches()).getOrElse(true)
-				archiveList.contains(ext) && incrslt
+				FileUtils.getExtension(file.getName()) match {
+					case None => false
+					case Some(ext) =>
+						val archiveList = if (includeAllArchives) allArchives else allJavaArchives
+						// the following will return false ONLY if the include pattern option is defined and if it DOES NOT match filename, otherwise true will be returned
+						val incrslt = includePattern.map(p => new Regex(p).pattern.matcher(file.getName()).matches()).getOrElse(true)
+						archiveList.contains(ext) && incrslt
+				}
 			}
 		}
 	}
