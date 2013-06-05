@@ -15,6 +15,7 @@ import org.ozb.utils.io.FileUtils.withZipFile
 import org.ozb.utils.io.FileUtils.isBinaryContent
 import org.ozb.utils.io.IOUtils.withInputStream
 import org.ozb.utils.pubsub.Publisher
+import scala.reflect.BeanProperty
 
 /**
  * Find text within archive entries.
@@ -85,10 +86,17 @@ object JarGrep {
 
 class JarGrepOptions (
 	var verbose: Boolean = false,
+	@BeanProperty
 	var recurse: Boolean = false,
 	var includeEntryPattern: Option[String] = None,
 	var encoding: Option[String] = None
-) extends Options
+) extends Options {
+	override def toString() = {
+		"Options{includePattern=[%s],ignoreCase=[%s],allArchives=[%s],regexp=[%s],recurse=[%s],includeEntryPattern=[%s],encoding=[%s]}" format
+			(includePattern, ignoreCase, allArchives, regexp, recurse, includeEntryPattern, encoding)
+	}
+
+}
 	
 case class JarGrepStats (
 	var lineMatchCount: Int = 0, // number of matching lines
