@@ -6,10 +6,10 @@ name := "ozb-jartools"
 
 version := "0.2"
 
-scalaVersion := "2.9.3"
+scalaVersion := "2.10.3"
 
 libraryDependencies ++= Seq(
-	"com.github.scopt" % "scopt_2.9.2" % "2.1.0" withSources(),
+	"com.github.scopt" %% "scopt" % "3.1.0" withSources(),
 	"org.ozb" %% "ozb-scala-utils" % "0.2" intransitive() withSources()
 )
 

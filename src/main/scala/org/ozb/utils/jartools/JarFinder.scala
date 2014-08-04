@@ -26,21 +26,25 @@ import scopt.OptionParser
  */
 object JarFinder {
 	def main(args: Array[String]) {
-		val config = new Options()
 		var basedir: String = null
 		var dir: File = null
 		var pattern: String = null
-		val parser = new OptionParser("JarFinder") {
-			//opt("d", "dir", "<dir>", "the directory to search in", {v: String => config.basedir = v; config.dir = new java.io.File(v)})
-			arg("<dir>", "<dir> : directory to search in", { v: String => basedir = v; dir = new java.io.File(v) })
-			arg("<pattern>", "<pattern> : pattern to look for", { pattern = _ })
-			opt("i", "ignorecase", "ignore case", { config.ignoreCase = true })
-			opt(None, "include", "<name pattern>", "include only archives whose name match the pattern", { v: String => config.includePattern = Some(toRegexPattern(v)) })
-			opt("a", "allarchives", "all archives (include zip files)", { config.allArchives = true })
-			opt("e", "regexp", "use regular expression", { config.regexp = true })
+		val parser = new OptionParser[Options]("JarFinder") {
+			arg[String]("<dir>") text("directory to search in") action { (x, c) =>
+				basedir = x; dir = new java.io.File(x); c }
+			arg[String]("<pattern>") text("pattern to look for") action { (x, c) => 
+				pattern = x; c }
+			opt[Unit]('i', "ignorecase") text("ignore case") action { (_, c) => 
+				c.ignoreCase = true; c }
+			opt[String]("include") valueName("<name pattern>") text("include only archives whose name match the pattern") action { (x, c) => 
+				c.includePattern = Some(toRegexPattern(x)); c }
+			opt[Unit]('a', "allarchives") text("all archives (include zip files)") action { (_, c) => 
+				c.allArchives = true; c }
+			opt[Unit]('e', "regexp") text("use regular expression") action { (_, c) => 
+				c.regexp = true; c }
 		}
 		
-		if (parser.parse(args)) {
+		parser.parse(args, new Options()) map { config =>
 			println("looking for [" + pattern + "] in dir [" + basedir + "]" +
 						(config.includePattern.map(" including archives matching " + _).getOrElse(""))
 					)

@@ -32,23 +32,31 @@ import scala.reflect.BeanProperty
  */
 object JarGrep {
 	def main(args: Array[String]) {
-		val config = new JarGrepOptions()
 		var pattern: String = null
 		var fileOrDir: File = null
-		val parser = new OptionParser("JarGrep") {
-			//opt("d", "dir", "<dir>", "the directory to search in", { v: String => config.basedir = v; config.dir = new java.io.File(v) })
-			arg("<pattern>", "<pattern> : pattern to look for", { pattern = _ })
-			arg("<file>", "<file> : archive file to grep or directory to recurse into", { v: String => fileOrDir = new java.io.File(v) })
-			opt("i", "ignorecase", "ignore case", { config.ignoreCase = true })
-			opt("v", "verbose", "show informartion on each file/entry processed", { config.verbose = true })
-			opt("r", "recurse", "recursively process the given directory", { config.recurse = true })
-			opt(None, "enc", "<encoding>", "use given encoding instead of platform's default. Ex. 'UTF-8' or 'ISO-8859-1'.", { v: String => config.encoding = Some(v) })
-			opt(None, "include", "<name pattern>", "include only archives whose name match the pattern", { v: String => config.includePattern = Some(toRegexPattern(v)) })
-			opt(None, "includeEntry", "<name pattern>", "process archive entries whose name match the pattern", { v: String => config.includeEntryPattern = Some(toRegexPattern(v)) })
-			opt("a", "allarchives", "all archives (include zip files)", {config.allArchives = true})		
+		val parser = new OptionParser[JarGrepOptions]("JarGrep") {
+			arg[String]("<pattern>") text("pattern to look for") action { (x, c) => 
+				pattern = x; c }
+			arg[File]("<file>") text("archive file to grep or directory to recurse into") action { (x, c) => 
+				fileOrDir = x; c }
+			opt[Unit]('i', "ignorecase") text("ignore case") action { (_, c) => 
+				c.ignoreCase = true; c }
+			opt[Unit]('v', "verbose") text("show informartion on each file/entry processed") action { (_, c) => 
+				c.verbose = true; c }
+			opt[Unit]('r', "recurse") text("recursively process the given directory") action { (_, c) => 
+				c.recurse = true; c }
+			opt[String]("enc") valueName("<encoding>") text("use given encoding instead of platform's default. Ex. 'UTF-8' or 'ISO-8859-1'.") action { (x, c) =>
+				c.encoding = Some(x); c }
+			opt[String]("include") valueName("<name pattern>") text("include only archives whose name match the pattern") action { (x, c) => 
+				c.includePattern = Some(toRegexPattern(x)); c }
+			opt[String]("includeEntry") valueName("<name pattern>") text("process archive entries whose name match the pattern") action { (x, c) => 
+				c.includeEntryPattern = Some(toRegexPattern(x)); c }
+			
+			opt[Unit]('a', "allarchives") text("all archives (include zip files)") action { (_, c) => 
+				c.allArchives = true; c }
 		}
-		
-		if (parser.parse(args)) {
+
+		parser.parse(args, new JarGrepOptions()) map { config =>
 			if (config.recurse)
 				println("looking for [" + pattern + "] in dir [" + fileOrDir + "]" +
 							(config.includePattern.map(" including archives matching " + _).getOrElse("")) +
